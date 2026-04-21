@@ -1,0 +1,220 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String           @id @default(auto()) @map("_id") @db.ObjectId
+  email        String           @unique
+  name         String
+  passwordHash String
+  role         Role             @default(STUDENT)
+  rollNumber   String?          // e.g., CYS-24-001 (Unique enforced in app logic)
+  batchId      String?          @db.ObjectId
+  batch        Batch?           @relation(fields: [batchId], references: [id])
+  sectionId    String?
+  isFirstLogin Boolean          @default(true)
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  attendances  ClassSession[]   @relation("InstructorSessions")
+  submissions  Submission[]
+  quizAttempts QuizAttempt[]
+  progress     LessonProgress[] @relation("StudentProgress")
+}
+
+model Batch {
+  id              String           @id @default(auto()) @map("_id") @db.ObjectId
+  name            String           @unique // e.g., CYS-24
+  currentSemester Int              @default(1)
+  isActive        Boolean          @default(true)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  users           User[]
+  offerings       CourseOffering[]
+}
+
+model Course {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  code        String   @unique // e.g., CYS-101
+  title       String
+  description String?
+  credits     Int      @default(3)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  offerings   CourseOffering[]
+}
+
+model CourseOffering {
+  id          String         @id @default(auto()) @map("_id") @db.ObjectId
+  courseId    String         @db.ObjectId
+  course      Course         @relation(fields: [courseId], references: [id])
+  teacherId   String         @db.ObjectId
+  batchId     String         @db.ObjectId
+  batch       Batch          @relation(fields: [batchId], references: [id])
+  semesterNum Int            // 1-8
+  section     String?        // A or B
+  attendance  ClassSession[]
+  quizzes     Quiz[]
+  assignments Assignment[]
+  modules     Module[]
+  announcements Announcement[]
+  schedules     Schedule[]
+}
+
+model Schedule {
+  id               String         @id @default(auto()) @map("_id") @db.ObjectId
+  dayOfWeek        String         // Monday, Tuesday, etc.
+  startTime        String         // e.g., "09:00"
+  endTime          String         // e.g., "11:00"
+  room             String?        // e.g., "Room 402"
+  courseOfferingId String         @db.ObjectId
+  courseOffering   CourseOffering @relation(fields: [courseOfferingId], references: [id])
+}
+
+model Module {
+  id               String         @id @default(auto()) @map("_id") @db.ObjectId
+  title            String
+  courseOfferingId String         @db.ObjectId
+  courseOffering   CourseOffering @relation(fields: [courseOfferingId], references: [id])
+  lessons          Lesson[]
+}
+
+model Lesson {
+  id        String           @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  moduleId  String           @db.ObjectId
+  module    Module           @relation(fields: [moduleId], references: [id])
+  resources Resource[]
+  progress  LessonProgress[]
+}
+
+model Resource {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  title    String
+  fileUrl  String
+  type     String @default("PDF") // PDF, VIDEO, DOC, LINK
+  lessonId String @db.ObjectId
+  lesson   Lesson @relation(fields: [lessonId], references: [id])
+}
+
+model Announcement {
+  id               String         @id @default(auto()) @map("_id") @db.ObjectId
+  title            String
+  content          String
+  createdAt        DateTime       @default(now())
+  courseOfferingId String         @db.ObjectId
+  courseOffering   CourseOffering @relation(fields: [courseOfferingId], references: [id])
+}
+
+model LessonProgress {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  lessonId    String   @db.ObjectId
+  studentId   String   @db.ObjectId
+  completedAt DateTime @default(now())
+  lesson      Lesson   @relation(fields: [lessonId], references: [id])
+  student     User     @relation("StudentProgress", fields: [studentId], references: [id])
+}
+
+model ClassSession {
+  id               String         @id @default(auto()) @map("_id") @db.ObjectId
+  date             DateTime       @default(now())
+  courseOfferingId String         @db.ObjectId
+  instructorId     String         @db.ObjectId
+  courseOffering   CourseOffering @relation(fields: [courseOfferingId], references: [id])
+  instructor       User           @relation("InstructorSessions", fields: [instructorId], references: [id])
+  records          AttendanceRecord[]
+}
+
+model AttendanceRecord {
+  id           String       @id @default(auto()) @map("_id") @db.ObjectId
+  sessionId    String       @db.ObjectId
+  studentId    String       @db.ObjectId
+  status       AttendanceStatus
+  session      ClassSession @relation(fields: [sessionId], references: [id])
+}
+
+model Quiz {
+  id               String         @id @default(auto()) @map("_id") @db.ObjectId
+  title            String
+  dueDate          DateTime?
+  courseOfferingId String         @db.ObjectId
+  courseOffering   CourseOffering @relation(fields: [courseOfferingId], references: [id])
+  questions        Question[]
+  attempts         QuizAttempt[]
+}
+
+model Question {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  text    String
+  options String // JSON string of options
+  answer  String
+  quizId  String @db.ObjectId
+  quiz    Quiz   @relation(fields: [quizId], references: [id])
+}
+
+model QuizAttempt {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  quizId      String   @db.ObjectId
+  studentId   String   @db.ObjectId
+  score       Int
+  submittedAt DateTime @default(now())
+  quiz        Quiz     @relation(fields: [quizId], references: [id])
+  student     User     @relation(fields: [studentId], references: [id])
+}
+
+model Assignment {
+  id               String         @id @default(auto()) @map("_id") @db.ObjectId
+  title            String
+  description      String?
+  dueDate          DateTime?
+  courseOfferingId String         @db.ObjectId
+  courseOffering   CourseOffering @relation(fields: [courseOfferingId], references: [id])
+  submissions      Submission[]
+}
+
+model Submission {
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  assignmentId String     @db.ObjectId
+  studentId    String     @db.ObjectId
+  fileUrl      String
+  grade        Int?
+  feedback     String?
+  submittedAt  DateTime   @default(now())
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  student      User       @relation(fields: [studentId], references: [id])
+}
+
+model RegistrationRequest {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  email        String           // No @unique here to avoid P2031 on standalone
+  name         String
+  passwordHash String
+  role         Role
+  rollNumber   String?
+  batchId      String?  @db.ObjectId
+  status       RequestStatus @default(PENDING)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+enum Role {
+  ADMIN
+  TEACHER
+  STUDENT
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LATE
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}

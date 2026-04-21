@@ -1,0 +1,50 @@
+﻿node.exe : warn The 
+configuration property 
+`package.json#prisma` 
+is deprecated and will 
+be removed in Prisma 
+7. Please migrate to a 
+Prisma config file 
+(e.g., 
+`prisma.config.ts`).
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo 
+...
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (warn The conf   
+ ig...ma.config.ts`    
+).:String) [], Rem    
+oteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+For more information, 
+see: https://pris.ly/pr
+isma-config
+
+Environment variables 
+loaded from .env
+Prisma schema loaded from prisma\schema.prisma
+Error: 
+EPERM: operation not 
+permitted, rename 'C:\U
+sers\AMC\Desktop\My_LMS
+\lms\node_modules\.pris
+ma\client\query_engine-
+windows.dll.node.tmp103
+00' -> 'C:\Users\AMC\De
+sktop\My_LMS\lms\node_m
+odules\.prisma\client\q
+uery_engine-windows.dll
+.node'
+
+

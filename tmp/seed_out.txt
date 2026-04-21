@@ -1,0 +1,98 @@
+﻿=== BZU LMS USER SEED ===
+
+node : Γ¥î Failed for 
+admin@bzu.edu.pk: 
+At line:1 char:1
++ node 
+tmp/seed_users.js 2>&1 
+| Out-File -Encoding 
+utf8 tmp/seed_out.tx 
+...
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (Γ¥î Failed fo   
+ r admin@bzu.edu.pk    
+: :String) [], Rem    
+oteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+Invalid 
+`prisma.user.upsert()` 
+invocation in
+C:\Users\AMC\Desktop\My
+_LMS\lms\tmp\seed_users
+.js:27:41
+
+  24 for (const u of 
+users) {
+  25   try {
+  26     const hash = 
+await bcrypt.hash(u.pas
+sword, 10);
+ΓåÆ 27     const 
+created = await 
+prisma.user.upsert(
+Prisma needs to 
+perform transactions, 
+which requires your 
+MongoDB server to be 
+run as a replica set. h
+ttps://pris.ly/d/mongod
+b-replica-set
+Γ¥î Failed for 
+teacher@bzu.edu.pk: 
+Invalid 
+`prisma.user.upsert()` 
+invocation in
+C:\Users\AMC\Desktop\My
+_LMS\lms\tmp\seed_users
+.js:27:41
+
+  24 for (const u of 
+users) {
+  25   try {
+  26     const hash = 
+await bcrypt.hash(u.pas
+sword, 10);
+ΓåÆ 27     const 
+created = await 
+prisma.user.upsert(
+Prisma needs to 
+perform transactions, 
+which requires your 
+MongoDB server to be 
+run as a replica set. h
+ttps://pris.ly/d/mongod
+b-replica-set
+Γ¥î Failed for 
+student@bzu.edu.pk: 
+Invalid 
+`prisma.user.upsert()` 
+invocation in
+C:\Users\AMC\Desktop\My
+_LMS\lms\tmp\seed_users
+.js:27:41
+
+  24 for (const u of 
+users) {
+  25   try {
+  26     const hash = 
+await bcrypt.hash(u.pas
+sword, 10);
+ΓåÆ 27     const 
+created = await 
+prisma.user.upsert(
+Prisma needs to 
+perform transactions, 
+which requires your 
+MongoDB server to be 
+run as a replica set. h
+ttps://pris.ly/d/mongod
+b-replica-set
+
+=== DONE ===
+You can now log in at http://localhost:3000/login

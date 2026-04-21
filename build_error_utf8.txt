@@ -1,0 +1,116 @@
+﻿Γû▓ Next.js 16.1.6 (Turbopack)
+- Environments: .env
+
+  Creating an optimized production build ...
+node.exe : 
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo 
+...
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (:String) [],    
+ RemoteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+> Build error occurred
+Error: Turbopack build 
+failed with 1 errors:
+./src/app/api/student/m
+odules/route.ts:3:1
+Export prisma doesn't 
+exist in target module
+[0m [90m 1 |[39m 
+[36mimport[39m { 
+[33mNextResponse[39m 
+} [36mfrom[39m [32m"
+next/server"[39m[33m;
+[39m
+ [90m 2 |[39m 
+[36mimport[39m { 
+getServerSession } 
+[36mfrom[39m [32m"ne
+xt-auth/next"[39m[33m
+;[39m
+[31m[1m>[22m[39m[9
+0m 3 |[39m 
+[36mimport[39m { 
+prisma } 
+[36mfrom[39m [32m"@/
+lib/prisma"[39m[33m;
+[39m
+ [90m   |[39m [31m[
+1m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[39
+m[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m[
+39m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[3
+1m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1m
+^[22m[39m[31m[1m^[
+22m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[3
+9m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[31
+m[1m^[22m[39m[31m[
+1m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[2
+2m[39m[31m[1m^[22m
+[39m[31m[1m^[22m[39
+m[31m[1m^[22m[39m[
+31m[1m^[22m[39m[31m
+[1m^[22m[39m[31m[1
+m^[22m[39m[31m[1m^
+[22m[39m[31m[1m^[22
+m[39m[31m[1m^[22m[
+39m[31m[1m^[22m[39m
+[31m[1m^[22m[39m[3
+1m[1m^[22m[39m
+ [90m 4 |[39m
+ [90m 5 |[39m 
+[36mexport[39m 
+[36masync[39m 
+[36mfunction[39m [33
+mGET[39m(req[33m:[39
+m [33mRequest[39m) {
+ [90m 6 |[39m   
+[36mconst[39m 
+session [33m=[39m 
+[36mawait[39m getServ
+erSession()[33m;[39m
+[0m
+
+The export prisma was 
+not found in module [pr
+oject]/src/lib/prisma.t
+s [app-route] 
+(ecmascript).
+Did you mean to import 
+default?
+All exports of the 
+module are statically 
+known (It doesn't have 
+dynamic exports). So 
+it's known statically 
+that the requested 
+export doesn't exist.
+
+
+    at <unknown> (./src
+/app/api/student/module
+s/route.ts:3:1)

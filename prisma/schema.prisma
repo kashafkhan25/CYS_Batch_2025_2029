@@ -24,6 +24,7 @@ model User {
   submissions  Submission[]
   quizAttempts QuizAttempt[]
   progress     LessonProgress[] @relation("StudentProgress")
+  offerings    CourseOffering[]
 }
 
 model Batch {
@@ -53,6 +54,7 @@ model CourseOffering {
   courseId    String         @db.ObjectId
   course      Course         @relation(fields: [courseId], references: [id])
   teacherId   String         @db.ObjectId
+  teacher     User           @relation(fields: [teacherId], references: [id])
   batchId     String         @db.ObjectId
   batch       Batch          @relation(fields: [batchId], references: [id])
   semesterNum Int            // 1-8
@@ -135,6 +137,7 @@ model AttendanceRecord {
   studentId    String       @db.ObjectId
   status       AttendanceStatus
   session      ClassSession @relation(fields: [sessionId], references: [id])
+  student      User         @relation(fields: [studentId], references: [id])
 }
 
 model Quiz {

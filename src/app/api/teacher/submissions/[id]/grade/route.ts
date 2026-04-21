@@ -5,7 +5,7 @@ import { authOptions } from "@/lib/auth";
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await getServerSession(authOptions);
   if (!session || session.user.role !== "TEACHER") {
@@ -14,7 +14,7 @@ export async function PATCH(
 
   try {
     const { grade, feedback } = await req.json();
-    const submissionId = params.id;
+    const { id: submissionId } = await params;
 
     // Verify ownership
     const submission = await prisma.submission.findUnique({

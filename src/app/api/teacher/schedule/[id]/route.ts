@@ -5,7 +5,7 @@ import { authOptions } from "@/lib/auth";
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await getServerSession(authOptions);
   if (!session || session.user.role !== "TEACHER") {
@@ -13,7 +13,7 @@ export async function DELETE(
   }
 
   try {
-    const id = params.id;
+    const { id } = await params;
     // Verify ownership
     const schedule = await prisma.schedule.findUnique({
       where: { id },

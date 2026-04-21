@@ -23,8 +23,9 @@ model User {
   attendances  ClassSession[]   @relation("InstructorSessions")
   submissions  Submission[]
   quizAttempts QuizAttempt[]
-  progress     LessonProgress[] @relation("StudentProgress")
-  offerings    CourseOffering[]
+  progress          LessonProgress[] @relation("StudentProgress")
+  offerings         CourseOffering[]
+  attendanceRecords AttendanceRecord[]
 }
 
 model Batch {
